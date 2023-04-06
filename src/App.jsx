@@ -7,30 +7,30 @@ import MySection from "./Components/MySection";
 import MyGallery from "./Components/MyGallery";
 import MyGallery1 from "./Components/MyGallery1";
 import MyGallery2 from "./Components/MyGallery2";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import MovieDetails from "./Components/MovieDetails";
 
 function App() {
   return (
-    <>
+    <BrowserRouter>
       <MyNav />
-      <MySection />
 
-      <Container style={{ marginBottom: "40px" }}>
-        <h3 style={{ marginBottom: "35px", color: "white" }}>
-          Popolar on Netflix:
-        </h3>
-        <MyGallery />
-        <h3 style={{ marginTop: "45px", marginBottom: "35px", color: "white" }}>
-          Best Seller:
-        </h3>
-        <MyGallery1 />
-        <h3 style={{ marginTop: "45px", marginBottom: "35px", color: "white" }}>
-          Kids Loved:
-        </h3>
-        <MyGallery2 />
-      </Container>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <MySection />
+              <MyGallery />
+              <MyGallery1 />
+            </>
+          }
+        />
+        <Route path="/MovieDetails/:id" element={<MovieDetails />} />
+      </Routes>
 
       <MyFooter />
-    </>
+    </BrowserRouter>
   );
 }
 

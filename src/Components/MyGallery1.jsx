@@ -1,45 +1,70 @@
+import React from "react";
 import { Component } from "react";
-import { Row, Col } from "react-bootstrap";
-import Card from "react-bootstrap/Card";
+import { Row } from "react-bootstrap";
+import Col from "react-bootstrap/Col";
+import Spinner from "react-bootstrap/Spinner";
 
-class MyGallery1 extends Component {
+class MyGallery1 extends React.Component {
   state = {
-    StarWars: [],
+    galleria: [],
   };
-
-  CallSecond = async () => {
+  GetOneGallery = async () => {
     try {
-      const response = await fetch(
+      let response = await fetch(
         "http://www.omdbapi.com/?apikey=8c87943c&s=star%20wars"
       );
       if (response.ok) {
-        const responseData = await response.json();
+        let data = await response.json();
+        console.log(data);
         this.setState({
-          StarWars: responseData.Search,
+          galleria: data.Search,
         });
+      } else {
       }
     } catch (err) {
-      alert("Error: " + err.message);
+      console.log(err);
+      alert("problema nel caricamento");
     }
   };
 
   componentDidMount() {
-    this.CallSecond();
+    this.GetOneGallery();
+    console.log("funziona");
   }
 
   render() {
     return (
-      <Row sm={1} md={2} lg={3} xl={4} style={{ marginBottom: "30px" }}>
-        {this.state.StarWars.slice(0, 4).map((film) => {
-          return (
-            <Col key={film.imdbID}>
-              <Card style={{ width: "15rem", backgroundColor: "none" }}>
-                <Card.Img variant="top" src={film.Poster} />
-              </Card>
+      <>
+        {this.state.load && (
+          <div className="text-center fs-1">
+            <Spinner animation="border" role="status" variant="light">
+              <span className="">caricamento...</span>
+            </Spinner>
+          </div>
+        )}
+        <h3 className="my-3">Star wars saga</h3>
+        <Row className="text-center">
+          {this.state.galleria.slice(0, 5).map((film) => (
+            <Col
+              xs={12}
+              md={6}
+              lg={4}
+              xl={2}
+              xxl={2}
+              className="mx-3"
+              key={film.imdbID}
+            >
+              <img
+                src={film.Poster}
+                width={245}
+                className="-film"
+                id="film1"
+                alt=""
+              />
             </Col>
-          );
-        })}
-      </Row>
+          ))}
+        </Row>
+      </>
     );
   }
 }
